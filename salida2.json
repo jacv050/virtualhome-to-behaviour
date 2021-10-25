@@ -1,0 +1,1 @@
+{"relax": {"make_a_coffee_00": {"id": 0, "segments": {"WALK_0": {"timestamp": ["0", "16"]}, "WALK_1": {"timestamp": ["17", "28"]}, "GRAB_2": {"timestamp": ["29", "36"]}, "WALK_3": {"timestamp": ["37", "51"]}, "PUTBACK_4": {"timestamp": ["52", "59"]}, "WALK_5": {"timestamp": ["60", "79"]}, "WALK_6": {"timestamp": ["80", "112"]}, "WALK_7": {"timestamp": ["113", "154"]}}}}}
