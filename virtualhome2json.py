@@ -3,7 +3,7 @@ import argparse
 import json
 
 virtualhome_actions = {"WALK":0, "RUN":1, "WALKTOWARDS":2, "WALKFORWARD":3, "TURNLEFT":4, "TURNRIGHT":5, "SIT":6, "STANDUP":7, "GRAB":8, "OPEN":9, "CLOSE":10, "PUT":11, "PUTIN":12, "SWITCHON":13, "SWITCHOFF":14, "DRINK":15, "TOUCH":16, "LOOKAT":17, "PUTBACK":18}
-behaviour_names = {"make_a_coffee":0}
+behaviour_names = {"make-a-coffee":0}
 """
 
 La salida del archivo tiene que tener un formato similar a finegym
@@ -37,7 +37,7 @@ def convert2json(filename, behaviourname):
             behaviour[behaviourname][action_name] = {}
             behaviour[behaviourname][action_name]["event"] = virtualhome_actions[splitted[1]]
             behaviour[behaviourname][action_name]["segments"] = None
-            behaviour[behaviourname][action_name]["timestamps"] = [splitted[2], splitted[3]] #In this case frames instead of seconds
+            behaviour[behaviourname][action_name]["timestamps"] = [float(splitted[2]), float(splitted[3])] #In this case frames instead of seconds
 
             action_number = action_number + 1
 
@@ -47,18 +47,22 @@ def convert2jsonV2(filename, behaviourname):
     action_number = 0
     behaviour = {}
     behaviour[filename] = {}
-    bname = behaviourname+"_00"
+    bname = behaviourname#+"-"+"{}".format(0).zfill(2)
     with open('ftaa_'+filename+'.txt', 'r') as f:
         behaviour[filename][bname] = {}
         behaviour[filename][bname]["id"] = behaviour_names[behaviourname] # instead "event"
         behaviour[filename][bname]["segments"] = {}
+        lastframe = 0.0
         for line in f:
             splitted = line.split()
-            action_name = "{}_{}".format(splitted[1], action_number)
+            action_name = "{}_{}".format(splitted[1], "{}".format(action_number).zfill(2))
             behaviour[filename][bname]["segments"][action_name] = {}
-            behaviour[filename][bname]["segments"][action_name]["timestamp"] = [splitted[2], splitted[3]]
+            behaviour[filename][bname]["segments"][action_name]["timestamp"] = [float(splitted[2]), float(splitted[3])]
+            if float(splitted[3]) > lastframe:
+                lastframe = float(splitted[3])
 
             action_number = action_number + 1
+        behaviour[filename][bname]["timestamp"] = [0.0, float(lastframe)]
 
     return behaviour
 

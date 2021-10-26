@@ -1,0 +1,24 @@
+{
+    // Use IntelliSense para saber los atributos posibles.
+    // Mantenga el puntero para ver las descripciones de los existentes atributos.
+    // Para más información, visite: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "virtualhome2json_test",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/virtualhome2json.py",
+            "console": "integratedTerminal",
+            "args": ["--filename", "relax", "--behaviourname", "make-a-coffee", "--output", "salida2"]
+        },
+        {
+            "name": "json2annotation_test",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/json2annotation.py",
+            "console": "integratedTerminal",
+            "args": ["--filename", "salida2", "--output", "salida2"]
+        }
+    ]
+}
