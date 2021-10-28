@@ -10,10 +10,13 @@ if __name__ is "__main__":
 
     ARGS_ = PARSER_.parse_args()
 
+    #with os.scandir(ARGS_.dir) as ficheros:
     with os.scandir(ARGS_.dir) as ficheros:
         subdirectorios = [fichero.name for fichero in ficheros if fichero.is_dir()]
-
-        for dir in subdirectorios:
-            splitted = dir.split('-')
-            os.system("python virtualhome2json.py --filename " + dir + " --behaviourname " + splitted[0] + " --output" + splitted[0])
-            os.system("python json2annotation.py --filename " + splitted[0] + " --output " + splitted[0])
+        for behaviour in subdirectorios:
+            route = ARGS_.dir + "/" + behaviour
+            for dir in os.listdir(route):
+                file = route + "/" + dir + "/" + behaviour
+                os.system("python virtualhome2json.py --filename " + file + " --behaviourname " + behaviour + " --output " + file)
+                os.system("python json2annotation.py --filename " + dir + " --output " + dir)
+            

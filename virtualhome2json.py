@@ -43,7 +43,9 @@ def convert2json(filename, behaviourname):
 
     return behaviour
 
-def convert2jsonV2(filename, behaviourname):
+def convert2jsonV2(filenamep, behaviourname):
+    route_splitted = filenamep.split("/")
+    filename = route_splitted[-1]#TODO
     action_number = 0
     behaviour = {}
     behaviour[filename] = {}
