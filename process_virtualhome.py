@@ -4,7 +4,7 @@ import json
 import virtualhome2json
 import json2annotation
 
-if __name__ is "__main__":
+if __name__ == "__main__":
     PARSER_ = argparse.ArgumentParser(description="Parameters")
     PARSER_.add_argument("--dir", nargs="?", type=str, default="", help="Directory with virtualhome data")
 
@@ -16,7 +16,10 @@ if __name__ is "__main__":
         for behaviour in subdirectorios:
             route = ARGS_.dir + "/" + behaviour
             for dir in os.listdir(route):
-                file = route + "/" + dir + "/" + behaviour
-                os.system("python virtualhome2json.py --filename " + file + " --behaviourname " + behaviour + " --output " + file)
-                os.system("python json2annotation.py --filename " + dir + " --output " + dir)
+                file_input = route + "/" + dir + "/ftaa_" + behaviour + ".txt"
+                file_output= route + "/" + dir + "/ftaa_" + behaviour + ".json"
+                file_annotation= route + "/" + dir + "/ftaa_" + behaviour + "-annotation.txt"
+                
+                os.system("python virtualhome2json.py --filename " + file_input + " --behaviourname " + behaviour + " --output " + file_output)
+                os.system("python json2annotation.py --filename " + file_output + " --output " + file_annotation)
             

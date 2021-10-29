@@ -23,7 +23,7 @@ Salida virtualhome:
 """
 
 def save_json(json_object, output):
-    with open(output+'.json', 'w') as f:
+    with open(output, 'w') as f:
         json.dump(json_object, f)
 
 def convert2json(filename, behaviourname):
@@ -45,26 +45,27 @@ def convert2json(filename, behaviourname):
 
 def convert2jsonV2(filenamep, behaviourname):
     route_splitted = filenamep.split("/")
-    filename = route_splitted[-1]#TODO
+    #filename = route_splitted[-1]#TODO
     action_number = 0
     behaviour = {}
-    behaviour[filename] = {}
+    id_file = behaviourname+"-"+route_splitted[2]
+    behaviour[id_file] = {}
     bname = behaviourname#+"-"+"{}".format(0).zfill(2)
-    with open('ftaa_'+filename+'.txt', 'r') as f:
-        behaviour[filename][bname] = {}
-        behaviour[filename][bname]["id"] = behaviour_names[behaviourname] # instead "event"
-        behaviour[filename][bname]["segments"] = {}
+    with open(filenamep, 'r') as f:
+        behaviour[id_file][bname] = {}
+        behaviour[id_file][bname]["id"] = behaviour_names[behaviourname] # instead "event"
+        behaviour[id_file][bname]["segments"] = {}
         lastframe = 0.0
         for line in f:
             splitted = line.split()
             action_name = "{}_{}".format(splitted[1], "{}".format(action_number).zfill(2))
-            behaviour[filename][bname]["segments"][action_name] = {}
-            behaviour[filename][bname]["segments"][action_name]["timestamp"] = [float(splitted[2]), float(splitted[3])]
+            behaviour[id_file][bname]["segments"][action_name] = {}
+            behaviour[id_file][bname]["segments"][action_name]["timestamp"] = [float(splitted[2]), float(splitted[3])]
             if float(splitted[3]) > lastframe:
                 lastframe = float(splitted[3])
 
             action_number = action_number + 1
-        behaviour[filename][bname]["timestamp"] = [0.0, float(lastframe)]
+        behaviour[id_file][bname]["timestamp"] = [0.0, float(lastframe)]
 
     return behaviour
 
