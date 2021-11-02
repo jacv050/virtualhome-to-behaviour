@@ -6,7 +6,7 @@ virtualhome_actions = {"WALK":0, "RUN":1, "WALKTOWARDS":2, "WALKFORWARD":3, "TUR
 
 def json2annotation(filename, output_file):
     vhjson = None
-    with open(filename+".json", 'r') as f:
+    with open(filename, 'r') as f:
         vhjson = json.load(f)
 
     output = ""
@@ -16,7 +16,7 @@ def json2annotation(filename, output_file):
             for action in behaviour[1]["segments"].items():
                 action_name = action[0]
                 timestamp = action[1]["timestamp"]
-                output_line = (behaviour[0] + 
+                output_line = (behaviour[0]+"-"+filename.split("/")[2] + 
                     "_E_" + str(int(timestampb[0])).zfill(6) + "_" + str(int(timestampb[1])).zfill(6) + 
                     "_A_" + str(int(timestamp[0])).zfill(4) + "_" + str(int(timestamp[1])).zfill(4) + 
                     " " + str(virtualhome_actions[action_name.split("_")[0]]))
