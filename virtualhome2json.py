@@ -2,8 +2,8 @@ import os
 import argparse
 import json
 
-virtualhome_actions = {"WALK":0, "RUN":1, "WALKTOWARDS":2, "WALKFORWARD":3, "TURNLEFT":4, "TURNRIGHT":5, "SIT":6, "STANDUP":7, "GRAB":8, "OPEN":9, "CLOSE":10, "PUT":11, "PUTIN":12, "SWITCHON":13, "SWITCHOFF":14, "DRINK":15, "TOUCH":16, "LOOKAT":17, "PUTBACK":18}
-behaviour_names = {"make-a-coffee":0}
+#virtualhome_actions = {"WALK":0, "RUN":1, "WALKTOWARDS":2, "WALKFORWARD":3, "TURNLEFT":4, "TURNRIGHT":5, "SIT":6, "STANDUP":7, "GRAB":8, "OPEN":9, "CLOSE":10, "PUT":11, "PUTIN":12, "SWITCHON":13, "SWITCHOFF":14, "DRINK":15, "TOUCH":16, "LOOKAT":17, "PUTBACK":18}
+#behaviour_names = {"make-a-coffee":1}
 """
 
 La salida del archivo tiene que tener un formato similar a finegym
@@ -26,7 +26,7 @@ def save_json(json_object, output):
     with open(output+'.json', 'w') as f:
         json.dump(json_object, f)
 
-def convert2json(filename, behaviourname):
+def convert2json(filename, behaviourname, virtualhome_actions, behaviour_names):
     action_number = 0
     behaviour = {}
     behaviour[behaviourname] = {}
@@ -43,7 +43,7 @@ def convert2json(filename, behaviourname):
 
     return behaviour
 
-def convert2jsonV2(filename, behaviourname):
+def convert2jsonV2(filename, behaviourname, virtualhome_actions, behaviour_names):
     action_number = 0
     behaviour = {}
     behaviour[filename] = {}
@@ -70,10 +70,20 @@ if __name__ == "__main__":
     PARSER_ = argparse.ArgumentParser(description="Parameters")
     PARSER_.add_argument("--filename", nargs="?", type=str, default="", help="File to be convert to json")
     PARSER_.add_argument("--behaviourname", nargs="?", type=str, default="", help="Name of behaviour")
+    PARSER_.add_argument("--behaviours_ids", nargs="?", type=str, default="behaviour_names.json", help="Dictionary with behaviour names and their respective index.")
+    PARSER_.add_argument("--virtualhome_actions", nargs="?", type=str, default="virtualhome_actions.json", help="Dictionary with actions in virtualhome.")
     PARSER_.add_argument("--output", nargs="?", type=str, default="", help="Output file")
 
     ARGS_ = PARSER_.parse_args()
 
-    behaviour_json = convert2jsonV2(ARGS_.filename, ARGS_.behaviourname)
+
+    f = open(ARGS_.virtualhome_actions)
+    vh_actions_json = json.load(f)
+    f.close()
+    f = open(ARGS_.behaviours_ids)
+    beh_ids_names = json.load(f)
+    f.close()
+
+    behaviour_json = convert2jsonV2(ARGS_.filename, ARGS_.behaviourname, vh_actions_json, beh_ids_names)
     save_json(behaviour_json, ARGS_.output)
 
