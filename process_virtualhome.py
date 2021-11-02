@@ -23,7 +23,7 @@ if __name__ == "__main__":
                 file_output= route + "/" + dir + "/ftaa_" + behaviour + ".json"
                 file_annotation= route + "/" + dir + "/ftaa_" + behaviour + "-annotation.txt"
                 
-                os.system("python virtualhome2json.py --filename " + file_input + " --behaviourname " + behaviour + " --output " + file_output)
+                os.system("python virtualhome2json.py --filename " + file_input + " --behaviourname " + behaviour + " --output " + file_output + " --behaviours_ids behaviour_names.json --virtualhome_actions virtualhome_actions.json")
                 os.system("python json2annotation.py --filename " + file_output + " --output " + file_annotation)
             
                 with open(file_output, 'r') as f:
@@ -38,3 +38,4 @@ if __name__ == "__main__":
             json.dump(main_json, f)
         with open("virtualhome_labels.txt", 'w') as f:
             f.write(main_annotation)
+        os.system("python virtualhomecategories.py --behaviours_ids behaviour_names.json --output set_categories.txt")

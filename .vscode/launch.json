@@ -21,6 +21,13 @@
             "args": ["--filename", "salida2", "--output", "salida2"]
         },
         {
+            "name": "virtualhomecategories_test",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/virtualhomecategories.py",
+            "console": "integratedTerminal"
+        },
+        {
             "name": "process_virtualhome_test",
             "type": "python",
             "request": "launch",
