@@ -10,6 +10,9 @@ if __name__ == "__main__":
 
     ARGS_ = PARSER_.parse_args()
 
+    main_annotation = ""
+    main_json = {}
+
     #with os.scandir(ARGS_.dir) as ficheros:
     with os.scandir(ARGS_.dir) as ficheros:
         subdirectorios = [fichero.name for fichero in ficheros if fichero.is_dir()]
@@ -23,3 +26,15 @@ if __name__ == "__main__":
                 os.system("python virtualhome2json.py --filename " + file_input + " --behaviourname " + behaviour + " --output " + file_output)
                 os.system("python json2annotation.py --filename " + file_output + " --output " + file_annotation)
             
+                with open(file_output, 'r') as f:
+                    json_file = json.load(f)
+                    for object in json_file.items():
+                        main_json[object[0]] = object[1]
+
+                with open(file_annotation, 'r') as f:
+                    main_annotation = main_annotation + f.read()
+
+        with open("virtualhome_annotations.json", 'w') as f:
+            json.dump(main_json, f)
+        with open("virtualhome_labels.txt", 'w') as f:
+            f.write(main_annotation)
