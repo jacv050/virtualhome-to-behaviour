@@ -15,7 +15,7 @@ if __name__ == "__main__":
 
     output = ""
     for item in bh_json.items():
-        output = "set: " + str(item[1]) + "; " + item[0]
+        output = "set: " + str(item[1]) + "; " + item[0] + "\n"
 
     with open(ARGS_.output, 'w') as f:
         f.write(output)
