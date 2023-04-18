@@ -1,6 +1,7 @@
 import os
 import argparse
 import json
+from collections import OrderedDict
 
 #virtualhome_actions = {"WALK":0, "RUN":1, "WALKTOWARDS":2, "WALKFORWARD":3, "TURNLEFT":4, "TURNRIGHT":5, "SIT":6, "STANDUP":7, "GRAB":8, "OPEN":9, "CLOSE":10, "PUT":11, "PUTIN":12, "SWITCHON":13, "SWITCHOFF":14, "DRINK":15, "TOUCH":16, "LOOKAT":17, "PUTBACK":18}
 #behaviour_names = {"make-a-coffee":1}
@@ -38,6 +39,7 @@ def convert2json(filename, behaviourname, virtualhome_actions, behaviour_names):
             behaviour[behaviourname][action_name]["event"] = virtualhome_actions[splitted[1]]
             behaviour[behaviourname][action_name]["segments"] = None
             behaviour[behaviourname][action_name]["timestamps"] = [float(splitted[2]), float(splitted[3])] #In this case frames instead of seconds
+            behaviour[behaviourname][action_name]["stages"] = 1
 
             action_number = action_number + 1
 
@@ -48,19 +50,21 @@ def convert2jsonV2(filenamep, behaviourname, virtualhome_actions, behaviour_name
     route_splitted = filenamep.split("/")
     action_number = 0
     behaviour = {}
-    id_file = behaviourname+"-"+route_splitted[2]
+    id_file = behaviourname#+"-"+route_splitted[2]
     behaviour[id_file] = {}
-    bname = behaviourname#+"-"+"{}".format(0).zfill(2)
+    #bname = behaviourname
+    bname = route_splitted[2]
     with open(filenamep, 'r') as f:
         behaviour[id_file][bname] = {}
         behaviour[id_file][bname]["id"] = behaviour_names[behaviourname] # instead "event"
-        behaviour[id_file][bname]["segments"] = {}
+        behaviour[id_file][bname]["segments"] = OrderedDict()
         lastframe = 0.0
         for line in f:
             splitted = line.split()
             action_name = "{}_{}".format(splitted[1], "{}".format(action_number).zfill(2))
             behaviour[id_file][bname]["segments"][action_name] = {}
             behaviour[id_file][bname]["segments"][action_name]["timestamp"] = [float(splitted[2]), float(splitted[3])]
+            behaviour[id_file][bname]["segments"][action_name]["stages"] = 1
             if float(splitted[3]) > lastframe:
                 lastframe = float(splitted[3])
 
